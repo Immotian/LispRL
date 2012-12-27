@@ -2,13 +2,16 @@
 ;;I'll strip out the quicklisp initialization and quickload when I get ASDF working properly.
 ;;
 
-#-quicklisp
+#|-quicklisp
 (let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp"
                                        (user-homedir-pathname))))
   (when (probe-file quicklisp-init)
-    (load quicklisp-init)))
+    (load quicklisp-init)))|#
 
-(ql:quickload :cl-charms)
+;(ql:quickload :cl-charms)
 
-(defpackage #:lispRL
+(defpackage :lisprl
   (:use #:cl #:cl-charms))
+
+
+(in-package :lisprl)

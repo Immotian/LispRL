@@ -12,4 +12,4 @@
       (setf (aref map
 		  (+ length (rect-x rect))
 		  (+ height (rect-y rect)))
-	    (make-instance 'tile :pass t :opaque nil :char (char-code #\.) :color COLOR_GREEN)))))
+	    (make-instance 'tile :pass t :opaque nil :char #\. :color COLOR_GREEN)))))

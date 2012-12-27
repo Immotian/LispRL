@@ -1,11 +1,14 @@
-(in-package :lispRL)
+(in-package :lisprl)
 
 (defclass tile ()
   ((passable :accessor tile-passable :initarg :pass)
-   (character :accessor tile-char :initarg :char)
+   (character :initarg :char)
    (opaque :accessor tile-opaque :initarg :opaque :initform nil)
    (visited :accessor tile-visit :initarg :visit :initform nil)
    (color :accessor tile-color :initarg :color)))
+
+(defmethod tile-char ((tile tile))
+  (char-code (slot-value tile 'character)))
 
 (defmethod draw-tile ((tile tile) x y)
   "You have to move the cursor before calling tile-draw; tiles are intended to be used in maps, so they do not have their own x and y slots."

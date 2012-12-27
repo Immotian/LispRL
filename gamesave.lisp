@@ -1,4 +1,4 @@
-(in-package :lispRL)
+(in-package :lisprl)
 
 (defun save-everything ()
   (with-open-file (*standard-output* #p"save.txt" :direction :output :if-exists :supersede :if-does-not-exist :create)

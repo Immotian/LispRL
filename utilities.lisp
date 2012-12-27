@@ -1,4 +1,4 @@
-(in-package :lispRL)
+(in-package :lisprl)
 
 (defun init ()
   "Whatever needs to be done before the game loop"
@@ -10,12 +10,12 @@
   (setf *player* (make-instance 'object
 				:x 15
 				:y 15
-				:char (char-code #\@)))
-  (push (make-instance 'object :x 5 :y 9 :char (char-code #\b)) *objects*)
-  (init-colors))
+				:char #\@))
+  (push (make-instance 'object :x 5 :y 9 :char #\b) *objects*)
+  #|(init-colors)|#)
 
 ;;from http://www.pvv.ntnu.no/~eirikald/repos/bzr/cl-ncurses/tests/advocacy.lisp
-(defun init-colors ()
+#|(defun init-colors ()
   (start-color)
   (init-pair COLOR_BLACK   COLOR_BLACK   COLOR_BLACK)
   (init-pair COLOR_GREEN   COLOR_GREEN   COLOR_BLACK)
@@ -24,7 +24,7 @@
   (init-pair COLOR_WHITE   COLOR_WHITE   COLOR_BLACK)
   (init-pair COLOR_MAGENTA COLOR_MAGENTA COLOR_BLACK)
   (init-pair COLOR_BLUE    COLOR_BLUE    COLOR_BLACK)
-  (init-pair COLOR_YELLOW  COLOR_YELLOW  COLOR_BLACK))
+  (init-pair COLOR_YELLOW  COLOR_YELLOW  COLOR_BLACK))|#
 
 
 (defun draw-map (map)

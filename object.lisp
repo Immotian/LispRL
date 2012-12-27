@@ -1,9 +1,12 @@
-(in-package :lispRL)
+(in-package :lisprl)
 
 (defclass object ()
   ((x :accessor object-x :initarg :x)
    (y :accessor object-y :initarg :y)
-   (character :accessor object-char :initarg :char)))
+   (character :initarg :char)))
+
+(defmethod object-char ((object object))
+  (char-code (slot-value object 'character)))
 
 (defun in-map (x y map)
   (if (and (< x (array-dimension map 0))
@@ -13,11 +16,11 @@
       t
       nil))
 
-(defmethod objmove ((object object) dx dy)
+(defmethod objmove ((object object) dx dy map)
   (let ((new-x (+ (object-x object) dx))
 	(new-y (+ (object-y object) dy)))
-    (if (and (in-map new-x new-y *map*)
-	     (tile-passable (aref *map* new-x new-y)))
+    (if (and (in-map new-x new-y map)
+	     (tile-passable (aref map new-x new-y)))
 	(progn
 	  (setf (object-x object) new-x)
 	  (setf (object-y object) new-y))
