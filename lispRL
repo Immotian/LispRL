@@ -1,0 +1,4 @@
+#!/bin/bash
+
+#sbcl --eval "(asdf:operate 'asdf:load-op 'lispRL)"
+sbcl --script ./lispRL.lisp
