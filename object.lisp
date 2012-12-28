@@ -16,16 +16,16 @@
       t
       nil))
 
-(defmethod objmove ((object object) dx dy map)
+(defmethod move-thing ((object object) dx dy map)
   (let ((new-x (+ (object-x object) dx))
 	(new-y (+ (object-y object) dy)))
     (if (and (in-map new-x new-y map)
 	     (tile-passable (aref map new-x new-y)))
 	(progn
 	  (setf (object-x object) new-x)
-	  (setf (object-y object) new-y))
-	(add-message "You bump into the wall."))))
-
+	  (setf (object-y object) new-y)
+	  t)
+	nil)))
 
 (defmethod draw ((object object))
   (if (is-visible *player* object *map*)

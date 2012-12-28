@@ -1,7 +1,7 @@
 (defpackage :lisprl
   (:use #:cl #:cl-charms))
 (in-package :lisprl)
-;(setf *error-output* *temp-stdout*)
+
 
 ;;Reminder: printw and similar take integer arguments; CL's division != integer division
 (defun main(argv)
