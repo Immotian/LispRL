@@ -12,10 +12,10 @@
 				:y 15
 				:char #\@))
   (push (make-instance 'object :x 5 :y 9 :char #\b) *objects*)
-  #|(init-colors)|#)
+  (init-colors))
 
 ;;from http://www.pvv.ntnu.no/~eirikald/repos/bzr/cl-ncurses/tests/advocacy.lisp
-#|(defun init-colors ()
+(defun init-colors ()
   (start-color)
   (init-pair COLOR_BLACK   COLOR_BLACK   COLOR_BLACK)
   (init-pair COLOR_GREEN   COLOR_GREEN   COLOR_BLACK)
@@ -24,7 +24,7 @@
   (init-pair COLOR_WHITE   COLOR_WHITE   COLOR_BLACK)
   (init-pair COLOR_MAGENTA COLOR_MAGENTA COLOR_BLACK)
   (init-pair COLOR_BLUE    COLOR_BLUE    COLOR_BLACK)
-  (init-pair COLOR_YELLOW  COLOR_YELLOW  COLOR_BLACK))|#
+  (init-pair COLOR_YELLOW  COLOR_YELLOW  COLOR_BLACK))
 
 
 (defun draw-map (map)
@@ -71,7 +71,7 @@
 	       (setf *los-radius* 10)
 	       (setf *los-radius* 7)))
       (#\q (setf *running* nil)))
-    (objmove *player* delta-x delta-y)))
+    (objmove *player* delta-x delta-y *map*)))
 
 ;;(defun in-map (x y map)
 ;;  (print object)

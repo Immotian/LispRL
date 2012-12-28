@@ -16,7 +16,7 @@
 
 
 
-(start-color)
+#|(start-color)
   (init-pair COLOR_BLACK   COLOR_BLACK   COLOR_BLACK)
   (init-pair COLOR_GREEN   COLOR_GREEN   COLOR_BLACK)
   (init-pair COLOR_RED     COLOR_RED     COLOR_BLACK)
@@ -25,3 +25,4 @@
   (init-pair COLOR_MAGENTA COLOR_MAGENTA COLOR_BLACK)
   (init-pair COLOR_BLUE    COLOR_BLUE    COLOR_BLACK)
   (init-pair COLOR_YELLOW  COLOR_YELLOW  COLOR_BLACK)
+|#
