@@ -1,7 +1,8 @@
 (in-package :lisprl)
 
 (defclass object ()
-  ((x :accessor object-x :initarg :x)
+  ((name :accessor object-name :initarg :name)
+   (x :accessor object-x :initarg :x)
    (y :accessor object-y :initarg :y)
    (character :initarg :char)))
 

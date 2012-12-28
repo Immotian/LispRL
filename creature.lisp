@@ -29,7 +29,15 @@
   (rotatef (object-y creature) (object-y other-creature)))
 
 (defmethod attack ((creature creature) (other-creature creature))
-  (lose-life other-creature (creature-str creature)))
+  (let ((damage (creature-str creature)))
+    (add-message (concatenate 'string
+			      (object-name creature)
+			      " attacks "
+			      (object-name other-creature)
+			      " for "
+			      (prin1-to-string damage)
+			      " damage."))
+  (lose-life other-creature damage)))
 
 (defmethod lose-life ((creature creature) damage)
   (setf (creature-hp creature) (- (creature-hp creature) damage))
@@ -37,6 +45,7 @@
       (die creature)))
 
 (defmethod die ((creature creature))
+  (add-message (concatenate 'string (object-name creature) " dies!"))
   (setf *creature-list* (delete-if #'(lambda (creature-in-list)
 		 (eq creature-in-list creature))
 	     *creature-list*))
@@ -47,3 +56,17 @@
 		 :x (object-x creature)
 		 :y (object-y creature)
 		 :char #\%))
+
+(defmethod act ((creature creature))
+  (funcall (creature-ai creature) creature))
+
+;;;Creature AI
+(defmethod aggressor ((creature creature))
+  (let ((dx (cond ((> (object-x *player*) (object-x creature)) 1)
+		  ((< (object-x *player*) (object-x creature)) -1)
+		  (t 0)))
+	(dy (cond ((> (object-y *player*) (object-y creature)) 1)
+		  ((< (object-y *player*) (object-y creature)) -1)
+		  (t 0))))
+    
+	  (move-thing creature dx dy *map*)))

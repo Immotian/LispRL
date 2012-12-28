@@ -8,6 +8,7 @@
   (curs-set 0)
   (getmaxyx *stdscr* *screen-y* *screen-x*)
   (setf *player* (make-instance 'creature
+				:name "Player"
 				:x 15
 				:y 15
 				:char #\@
@@ -17,10 +18,11 @@
 				:str 3
 				:ally 'player))
   (push (make-instance 'creature
+		       :name "Foo"
 		       :x 5
 		       :y 9
 		       :char #\x
-		       :ai nil
+		       :ai #'aggressor
 		       :hp 10
 		       :mhp 10
 		       :str 1
@@ -59,7 +61,7 @@
   (mapcan #'draw *creature-list*)
   (draw *player*)
   (print-messages *message-list* *max-display-message* *message-box-x* *message-box-y*)
-  ;;(draw-bresenham *player* (car *objects*) *map*)
+  ;;(draw-bresenham *player* (car *creature-list*) *map*)
   (refresh))
 
 (defun kill ()
@@ -86,7 +88,8 @@
 	       (setf *los-radius* 10)
 	       (setf *los-radius* 7)))
       (#\q (setf *running* nil)))
-    (move-thing *player* delta-x delta-y *map*)))
+    (move-thing *player* delta-x delta-y *map*)
+    (mapcan #'act *creature-list*)))
 
 ;;(defun in-map (x y map)
 ;;  (print object)
@@ -194,12 +197,3 @@
 		x
 		(nth (- num-print i 1) message-list)))))
 
-
-(defmacro popnth (n lst)
-  (let ((t1 (gensym))(t2 (gensym)))
-    `(if (eql ,n 0)
-	 (pop ,lst)
-	 (let* ((,t1 (nthcdr (- ,n 1) ,lst))
-		(,t2 (car (cdr ,t1))))
-	   (setf (cdr ,t1) (cddr ,t1))
-	   ,t2))))

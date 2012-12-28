@@ -6,7 +6,7 @@
 (defparameter *objects* nil)
 (defparameter *creature-list* nil)
 (defparameter *running* t)
-(defparameter *map-max-x* 80)
+(defparameter *map-max-x* 40)
 (defparameter *map-max-y* 25)
 (defparameter *los-radius* 7)
 (defparameter *message-box-y* 0)
