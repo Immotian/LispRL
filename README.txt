@@ -1,1 +1,2 @@
-This is the stub README.txt for the "mytest" project.
+Use vikeys to move NSEW
+Use q to quit
