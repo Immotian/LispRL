@@ -5,7 +5,6 @@
 (defparameter *player* nil)
 (defparameter *objects* nil)
 (defparameter *creature-list* nil)
-(defparameter *running* t)
 (defparameter *map-max-x* 40)
 (defparameter *map-max-y* 25)
 (defparameter *los-radius* 7)
@@ -14,3 +13,10 @@
 (defparameter *message-list* nil)
 (defparameter *max-display-message* 5)
 (defparameter *map* (make-array (list *map-max-x* *map-max-y*) :initial-element nil))
+
+(dotimes (x (array-dimension *map* 0))
+  (dotimes (y (array-dimension *map* 1))
+    (setf (aref *map* x y)
+	  (make-instance 'tile :pass nil :opaque t :char #\# :visit nil :color COLOR_BLUE))))
+(defparameter *time-deque* nil)
+

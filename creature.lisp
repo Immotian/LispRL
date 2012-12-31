@@ -6,6 +6,20 @@
    (ai :accessor creature-ai :initarg :ai)
    (alliance :accessor creature-ally :initarg :ally)))
 
+(defparameter *player* (make-instance 'creature
+				:name "Player"
+				:x 15
+				:y 15
+				:char #\@
+				:ai nil
+				:hp 20
+				:mhp 20
+				:str 3
+				:speed 100
+				:ap 0
+				:ally 'player
+				:turn-started nil))
+
 (defun creature-at-place (x y creature-list)
   (find-if #'(lambda (creature) (and (= (object-x creature) x)
 				(= (object-y creature) y)))
@@ -49,7 +63,8 @@
   (setf *creature-list* (delete-if #'(lambda (creature-in-list)
 		 (eq creature-in-list creature))
 	     *creature-list*))
-  (push (create-corpse creature) *objects*))
+  (push (create-corpse creature) *objects*)
+  (release-object creature *time-deque*))
 
 (defmethod create-corpse ((creature creature))
   (make-instance 'object
@@ -57,8 +72,30 @@
 		 :y (object-y creature)
 		 :char #\%))
 
+
+
 (defmethod act ((creature creature))
-  (funcall (creature-ai creature) creature))
+  (if (creature-ai creature)
+  (progn
+    (funcall (creature-ai creature) creature)
+    100)
+  (error (format t "No AI for ~a" (object-name creature)))))
+
+(defmethod act ((creature (eql *player*)))
+  (progn
+  (let ((input (code-char (getch))) (dx 0) (dy 0))
+    (case input
+      (#\h (decf dx))
+      (#\j (incf dy))
+      (#\k (decf dy))
+      (#\l (incf dx))
+      (#\x (if (< *los-radius* 10)
+	       (setf *los-radius* 10)
+	       (setf *los-radius* 7)))
+      (#\q (setf *running* nil))
+      (otherwise (return-from act 'no-move)))
+    (move-thing creature dx dy *map*))
+  100))
 
 ;;;Creature AI
 (defmethod aggressor ((creature creature))
@@ -70,3 +107,4 @@
 		  (t 0))))
     
 	  (move-thing creature dx dy *map*)))
+

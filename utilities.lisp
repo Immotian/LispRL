@@ -7,17 +7,20 @@
   (noecho)
   (curs-set 0)
   (getmaxyx *stdscr* *screen-y* *screen-x*)
-  (setf *player* (make-instance 'creature
+  #|(setf *player* (make-instance 'creature
 				:name "Player"
 				:x 15
 				:y 15
 				:char #\@
-				:ai nil
+				:ai #'player
 				:hp 20
 				:mhp 20
 				:str 3
-				:ally 'player))
-  (push (make-instance 'creature
+				:speed 100
+				:ap 0
+				:ally 'player))|#
+  (register-object *player* *time-deque*)
+  (defparameter *creature* (make-instance 'creature
 		       :name "Foo"
 		       :x 5
 		       :y 9
@@ -26,9 +29,13 @@
 		       :hp 10
 		       :mhp 10
 		       :str 1
-		       :ally 'monsters)
-	*creature-list*)
+		       :speed 100
+		       :ap 0
+		       :ally 'monsters
+		       :turn-started nil))
+  (register-object *creature* *time-deque*)
   
+  (push *creature* *creature-list*)
   (init-colors))
 
 ;;from http://www.pvv.ntnu.no/~eirikald/repos/bzr/cl-ncurses/tests/advocacy.lisp
@@ -102,7 +109,7 @@
 
 
 ;;This and is-tile-visible were lifted from Wikipedia
-(defmethod draw-bresenham ((viewing-object object) (object object) map)
+#|(defmethod draw-bresenham ((viewing-object object) (object object) map)
   (let* ((x0 (object-x viewing-object))
 	 (y0 (object-y viewing-object))
 	 (x1 (object-x object))
@@ -142,7 +149,7 @@
 		 (move x y)
 		 (move y x))
 	     (addch (+ 97 x))))
-      t)))
+      t)))|#
 
 (defmethod is-tile-visible ((viewing-object object) tile-x tile-y map)
   (let* ((x0 (object-x viewing-object))

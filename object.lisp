@@ -4,7 +4,10 @@
   ((name :accessor object-name :initarg :name)
    (x :accessor object-x :initarg :x)
    (y :accessor object-y :initarg :y)
-   (character :initarg :char)))
+   (character :initarg :char)
+   (speed :accessor object-speed :initarg :speed)
+   (ap :accessor object-ap :initarg :ap)
+   (turn-started :accessor object-turn-started :initarg :turn-started)))
 
 (defmethod object-char ((object object))
   (char-code (slot-value object 'character)))
@@ -71,3 +74,53 @@
 		 (setf y (+ y ystep))
 		 (setf line-error (+ line-error dx)))))
       t)))
+
+(defmacro register-object (object time-deque)
+  `(push ,object ,time-deque))
+
+(defmethod release-object ((object object) time-deque)
+  (delete object time-deque))
+
+(defun rotate-left (rlist)
+  "Non-destructively returns a rotated list (positive parameter rotates to left)"
+  (nconc (cdr rlist) (list (car rlist))))
+
+
+
+(defun set-list (to from)
+  "Destructively copies from into to. Stops at the end of either parameter."
+  (if (and (car to) (car from))
+      (progn
+	(setf (car to) (car from))
+	(set-list (cdr to) (cdr from)))))
+
+(defun rotate (list count)
+  (if (minusp count)
+      (rotate list (+ (length list) count))
+      (nconc (subseq list count) (subseq list 0 count))))
+
+
+(defun tick (time-deque)
+  (if time-deque
+      (let* ((object (car time-deque))
+	     (ap (object-ap object))
+	     (speed (object-speed object))
+	     (turn-started (object-turn-started object)))
+	(if (not turn-started)
+	    (progn
+	      (setf (object-ap object) (+ ap speed))
+	      (setf (object-turn-started object) t)))
+
+	
+	(if (> (object-ap object) 0)
+	    
+	    (let ((action (act object)))
+	      (if (not (eq action 'no-move))
+		  (setf (object-ap object)
+			(- (object-ap object)
+			   action))))
+	    (progn	      
+	      (setf (object-turn-started object) nil)
+	      (set-list time-deque (rotate time-deque 1)))))
+      
+      (error "Time deque is empty")))
